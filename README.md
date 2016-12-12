@@ -27,6 +27,7 @@ gives you options to render the menus as both django templates or json for your 
 
 1. Install `wagtail-nav-menus` with pip
 2. Add `wagtail_nav_menus` to INSTALLED_APPS
+3. Ensure that `wagtail.contrib.modeladmin` is included in INSTALLED_APPS
 
 ## Settings
 

@@ -84,18 +84,21 @@ class NavCategoryBlock(blocks.StructBlock):
     title = blocks.CharBlock()
     sub_nav = blocks.StreamBlock(nav_content)
 
+    def set_template(self, template):
+        self.meta.template = template
+
     class Meta:
         icon = 'list-ul'
-        template = 'nav_menus/nav_category.html'
 
 
 class NavMenu(models.Model):
+    _nav_category_block = NavCategoryBlock()
     name = models.CharField(
         max_length=50,
         choices=NAV_MENU_CHOICES,
         unique=True)
     menu = StreamField([
-        ('nav_category', NavCategoryBlock()),
+        ('nav_category', _nav_category_block),
     ] + nav_content)
 
     panels = [
@@ -135,3 +138,6 @@ class NavMenu(models.Model):
         for stream_field in self.menu:
             result.append(self.stream_field_to_json(stream_field))
         return json.dumps(result, default=date_handler)
+
+    def set_category_template(self, category_template):
+        self._nav_category_block.set_template(category_template)

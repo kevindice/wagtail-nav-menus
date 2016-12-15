@@ -1,17 +1,18 @@
-from django import template
+from django.template import Library, loader, Context
 from ..models import NavMenu
 
-register = template.Library()
+register = Library()
 
 
-@register.inclusion_tag('nav_menus/tags/menu.html', takes_context=True)
-def get_nav_menu(context, menu_name, calling_page=None):
+@register.simple_tag(takes_context=True)
+def get_nav_menu(context, menu_name, calling_page=None, template='nav_menus/tags/menu.html'):
     nav_menu = NavMenu.objects.get_or_create(name=menu_name)[0]
-    return {
+    t = loader.get_template(template)
+    return t.render(Context({
         'calling_page': calling_page,
         'menu_items': nav_menu.menu,
         'request': context['request'],
-    }
+    }))
 
 
 @register.simple_tag

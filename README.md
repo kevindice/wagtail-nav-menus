@@ -62,11 +62,17 @@ You may use some template tags to use these in your site.
 
 ### get_nav_menu
 
-Use this to insert the menu using django templates
+Use this to insert the menu using django templates.
 
 ``` 
 {% load nav_menu_tags %}
 {% get_nav_menu 'footer' %}
+```
+
+Use the optional template argument to specify a custom template.
+
+```
+{% get_nav_menu 'footer' template='nav_menus/mobile_sidebar.html' %}
 ```
 
 See the [templates folder](wagtail_nav_menus/templates/) in this repo for examples of rendering the menu.

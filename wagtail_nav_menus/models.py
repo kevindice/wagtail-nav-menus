@@ -141,3 +141,8 @@ class NavMenu(models.Model):
 
     def set_category_template(self, category_template):
         self._nav_category_block.set_template(category_template)
+
+    def set_link_template(self, link_template):
+        for content_type in nav_content:
+            if hasattr(content_type[1].meta, 'template'):
+                content_type[1].meta.template = link_template

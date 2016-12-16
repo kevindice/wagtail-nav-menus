@@ -1,6 +1,5 @@
 from django.template import Library, loader, Context
 from ..models import NavMenu
-from pprint import pprint
 
 register = Library()
 
@@ -12,9 +11,11 @@ def get_nav_menu(context, menu_name, calling_page=None,
         category_template='nav_menus/nav_category.html'):
     nav_menu = NavMenu.objects.get_or_create(name=menu_name)[0]
 
+    # Set templates from optional tag kwargs
     nav_menu.set_category_template(category_template)
-
+    nav_menu.set_link_template(link_template)
     t = loader.get_template(menu_template)
+
     return t.render(Context({
         'calling_page': calling_page,
         'menu_items': nav_menu.menu,

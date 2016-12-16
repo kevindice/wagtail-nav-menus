@@ -69,10 +69,10 @@ Use this to insert the menu using django templates.
 {% get_nav_menu 'footer' %}
 ```
 
-Use the optional template argument to specify a custom template.
+Use optional arguments to specify a custom template for categories, links, and the overall menu.
 
 ```
-{% get_nav_menu 'footer' template='nav_menus/mobile_sidebar.html' %}
+{% get_nav_menu 'footer' menu_template='nav_menus/tags/menu.html' link='nav_menus/menu_link.html' category_template='nav_menus/nav_category.html' %}
 ```
 
 See the [templates folder](wagtail_nav_menus/templates/) in this repo for examples of rendering the menu.

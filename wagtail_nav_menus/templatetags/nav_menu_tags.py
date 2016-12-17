@@ -1,5 +1,6 @@
 from django.template import Library, loader, Context
 from ..models import NavMenu
+from pprint import pprint
 
 register = Library()
 
@@ -21,7 +22,6 @@ def get_nav_menu(context, menu_name, calling_page=None,
         'menu_items': nav_menu.menu,
         'request': context['request'],
     }))
-
 
 @register.simple_tag
 def get_nav_menu_json(menu_name):

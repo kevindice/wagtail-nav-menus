@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import NoReverseMatch
+from django.utils.html import format_html_join
 from wagtail.wagtailcore.fields import StreamField
 from wagtail.wagtailcore import blocks
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, StreamFieldPanel
@@ -10,7 +11,7 @@ from .loading import get_class
 from .utils import date_handler
 from .defaults import (
     WAGTAIL_NAV_MENU_TYPES_DEFAULT, WAGTAIL_NAV_MENU_CHOICES_DEFAULT)
-
+from pprint import pprint
 
 NAV_MENU_CHOICES = getattr(
     settings,
@@ -79,10 +80,33 @@ for name, module_label, class_name in NAV_MENU_TYPES:
         (name, get_class(module_label, class_name)()),
     )
 
+class HackedStreamBlock(blocks.StreamBlock):
+#    def get_first_link(self, value, context=None):
+#        return value[0].value['page'].url
+
+    def render_basic(self, value, context=None):
+        print(context)
+        if value[0].value['override_title'] == 'Overview':
+            return format_html_join(
+                '\n', '<!--<div class="block-{1}">-->{0}<!--</div>-->',
+                [
+                    (child.render(context=context), child.block_type)
+                    for child in value
+                ]
+            )
+        else:
+            return format_html_join(
+                '\n', '<!--<div class="block-{1}">-->{0}<!--</div>-->',
+                [
+                    (child.render(context=context), child.block_type)
+                    for child in value
+                ]
+            )
 
 class NavCategoryBlock(blocks.StructBlock):
     title = blocks.CharBlock()
-    sub_nav = blocks.StreamBlock(nav_content)
+    url = InternalPageBlock()
+    sub_nav = HackedStreamBlock(nav_content)
 
     def set_template(self, template):
         self.meta.template = template

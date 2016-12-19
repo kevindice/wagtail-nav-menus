@@ -109,7 +109,7 @@ class NavCategoryBlock(blocks.StructBlock):
     sub_nav = HackedStreamBlock(nav_content)
 
     def get_url():
-        return self.url.url
+        return self.url['page'].url
 
     def set_template(self, template):
         self.meta.template = template

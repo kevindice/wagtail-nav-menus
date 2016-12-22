@@ -82,6 +82,7 @@ for name, module_label, class_name in NAV_MENU_TYPES:
 
 class NavCategoryBlock(blocks.StructBlock):
     title = blocks.CharBlock()
+    page = blocks.PageChooserBlock()
     sub_nav = blocks.StreamBlock(nav_content)
 
     def set_template(self, template):
